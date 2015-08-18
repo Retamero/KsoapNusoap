@@ -1,9 +1,4 @@
 <?php
-	// http://www.thiengo.com.br
-	// Por: Vinícius Thiengo
-	// Em: 25/11/2013
-	// Versão: 1.0
-	// cliente.php
 	require_once 'lib/nusoap.php';
 
 	$client = new nusoap_client('http://retamero.com.br/webservice/server.php?wsdl');
