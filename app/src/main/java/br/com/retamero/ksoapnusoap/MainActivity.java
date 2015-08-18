@@ -22,7 +22,6 @@ public class MainActivity extends Activity {
 	/* Configurações que devem estar no lado WEBSERVICE do PHP/APACHE/WINDOWS ou LINUX
 	 * mudar onde esta retamero.com.br pelo IP ou dominio da maquina que esta rodando o webservice.
 	 */
-
 	private static final String SOAP_ACTION = "http://retamero.com.br/webservice/server.php/exemplo";
 	private static final String METHOD_NAME = "exemplo";
 	private static final String NAMESPACE = "http://retamero.com.br/webservice";
