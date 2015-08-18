@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/aguinaldo/Android/Sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="/home/aguinaldo/Área de Trabalho/KsoapNusoap_as/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-364b69e26415a72118386e56eababb3608cb8e7c.jar" />
+    </item>
+    <item
+        jar="/home/aguinaldo/Área de Trabalho/KsoapNusoap_as/app/libs/ksoap2-android-assembly-3.4.0-jar-with-dependencies.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="45fbaab416fb5cff992e662d1f7a83786f084fc3">
+        <dex dex="/home/aguinaldo/Área de Trabalho/KsoapNusoap_as/app/build/intermediates/pre-dexed/debug/ksoap2-android-assembly-3.4.0-jar-with-dependencies-e089d5ef945f7fc9ea9e2effc49fd98d7e8170d4.jar" />
+    </item>
+
+</items>
