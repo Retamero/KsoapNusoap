@@ -7,6 +7,8 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.app.Activity;
-
+import android.widget.Toast;
 import static br.com.retamero.ksoapnusoap.R.id.button;
-
 
 public class MainActivity extends Activity {
 	/* Configurações que devem estar no lado WEBSERVICE do PHP/APACHE/WINDOWS ou LINUX
@@ -30,10 +31,40 @@ public class MainActivity extends Activity {
 	private TextView tv, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16;
 	private EditText etTexto;
 	private String response;
+	private String msg;
+
+
+	public void limpaCampos(){
+		tv1.setText("");
+		tv2.setText("");
+		tv3.setText("");
+		tv4.setText("");
+		tv5.setText("");
+		tv6.setText("");
+		tv7.setText("");
+		tv8.setText("");
+		tv9.setText("");
+		tv10.setText("");
+		tv11.setText("");
+		tv12.setText("");
+		tv13.setText("");
+		tv14.setText("");
+		tv15.setText("");
+		tv16.setText("");
+	}
+
+	public void notifica(String msg){
+		Context contexto = getApplicationContext();
+		int duracao = Toast.LENGTH_LONG;
+		Toast toast = Toast.makeText(contexto, msg, duracao);
+		toast.show();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		msg ="Digite o ID do aluno.";
+		notifica(msg);
 		setContentView(R.layout.activity_main);
 		tv = (TextView) findViewById(R.id.textView36); //retorno
 		tv1 = (TextView) findViewById(R.id.textView4); //id
@@ -56,17 +87,18 @@ public class MainActivity extends Activity {
 		Button btn = (Button) findViewById(button);
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				limpaCampos();
 				String texto = etTexto.getText().toString();
-				if(texto.equals("") || texto == null){ //tratamento de erro resposta nula
-					tv.setText("ERR0: Um numero precisa ser especificado..");
+				if(texto.equals("") || texto == null){ //tratamento de erro iserção vazia
+					msg = "ERR0: Um numero precisa ser especificado..";
+					tv.setText(msg);
+					notifica(msg);
 				}else {
-					Log.i("DEBUG", etTexto.getText().toString());
 					myAsyncTask myRequest = new myAsyncTask();
 					myRequest.execute();
 				}
 			}
 		});
-
 	}
 
 	private class myAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -76,12 +108,19 @@ public class MainActivity extends Activity {
 			super.onPostExecute(result);
 			try {
 				JSONObject obj = new JSONObject(response);
-				if(obj.getString("id").equals("vazio")){ //tratamento de erro resposta nula
-					tv.setText("ERR0: Este usuario não existe em nosso banco de dados.");
+				if(obj.getString("id").equals("vazio")){ //tratamento de erro usuario não encontrado
+					msg = "ERR0: Este usuario não existe em nosso banco de dados.";
+					tv.setText(msg);
+					notifica(msg);
 				}else if(obj.getString("id").equals("null")){ //tratamento de erro resposta nula
-					tv.setText("ERR0: Não foi possivel estabelecer uma conexão com o servidor.");
+					msg = "ERR0: Não foi possivel estabelecer uma conexão com o servidor.";
+					tv.setText(msg);
+					notifica(msg);
 				}else{
 					tv.setText(response);
+					msg = "Busca realizada com sucesso!";
+					tv.setText(msg);
+					notifica(msg);
 				}
 				tv1.setText(obj.getString("id"));
 				tv2.setText(obj.getString("peso"));
@@ -137,9 +176,7 @@ public class MainActivity extends Activity {
 				Log.i("App", "====> NULO <========");
 				response = "{\"id\":\"null\"}";
 			}
-
 			return null;
-
 		}
 	}
 }
