@@ -18,6 +18,7 @@ import android.app.Activity;
 
 import static br.com.retamero.ksoapnusoap.R.id.button;
 
+
 public class MainActivity extends Activity {
 	/* Configurações que devem estar no lado WEBSERVICE do PHP/APACHE/WINDOWS ou LINUX
 	 * mudar onde esta retamero.com.br pelo IP ou dominio da maquina que esta rodando o webservice.
@@ -26,7 +27,7 @@ public class MainActivity extends Activity {
 	private static final String METHOD_NAME = "exemplo";
 	private static final String NAMESPACE = "http://retamero.com.br/webservice";
 	private static final String URL = "http://retamero.com.br/webservice/server.php?wsdl";
-	private TextView tv, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16,tv17;
+	private TextView tv, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16;
 	private EditText etTexto;
 	private String response;
 
@@ -34,29 +35,35 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		tv = (TextView) findViewById(R.id.textView2);
-		tv1 = (TextView) findViewById(R.id.textView5);
-		tv2 = (TextView) findViewById(R.id.textView7);
-		tv3 = (TextView) findViewById(R.id.textView9);
-		tv4 = (TextView) findViewById(R.id.textView11);
-		tv5 = (TextView) findViewById(R.id.textView13);
-		tv6 = (TextView) findViewById(R.id.textView15);
-		tv7 = (TextView) findViewById(R.id.textView17);
-		tv8 = (TextView) findViewById(R.id.textView19);
-		tv9 = (TextView) findViewById(R.id.textView21);
-		tv10 = (TextView) findViewById(R.id.textView23);
-		tv11 = (TextView) findViewById(R.id.textView25);
-		tv12 = (TextView) findViewById(R.id.textView27);
-		tv13 = (TextView) findViewById(R.id.textView29);
-		tv14 = (TextView) findViewById(R.id.textView31);
-		tv15 = (TextView) findViewById(R.id.textView33);
-		tv16 = (TextView) findViewById(R.id.textView35);
-		etTexto = (EditText) findViewById(R.id.editText2);
+		tv = (TextView) findViewById(R.id.textView36); //retorno
+		tv1 = (TextView) findViewById(R.id.textView4); //id
+		tv2 = (TextView) findViewById(R.id.textView6); //peso
+		tv3 = (TextView) findViewById(R.id.textView21); //altura
+		tv4 = (TextView) findViewById(R.id.textView22); //pema
+		tv5 = (TextView) findViewById(R.id.textView23); //peme
+		tv6 = (TextView) findViewById(R.id.textView24); //quadril
+		tv7 = (TextView) findViewById(R.id.textView25); //bies
+		tv8 = (TextView) findViewById(R.id.textView26); //bidi
+		tv9 = (TextView) findViewById(R.id.textView27); //tres
+		tv10 = (TextView) findViewById(R.id.textView28); //trdi
+		tv11 = (TextView) findViewById(R.id.textView29); //coes
+		tv12 = (TextView) findViewById(R.id.textView30); //codi
+		tv13 = (TextView) findViewById(R.id.textView31); //paes
+		tv14 = (TextView) findViewById(R.id.textView32); //padi
+		tv15 = (TextView) findViewById(R.id.textView33); //ques
+		tv16 = (TextView) findViewById(R.id.textView34); //qudi
+		etTexto = (EditText) findViewById(R.id.editText2);//envia
 		Button btn = (Button) findViewById(button);
 		btn.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View v) {
-				myAsyncTask myRequest = new myAsyncTask();
-				myRequest.execute();
+			public void onClick(View v) {
+				String texto = etTexto.getText().toString();
+				if(texto.equals("") || texto == null){ //tratamento de erro resposta nula
+					tv.setText("ERR0: Um numero precisa ser especificado..");
+				}else {
+					Log.i("DEBUG", etTexto.getText().toString());
+					myAsyncTask myRequest = new myAsyncTask();
+					myRequest.execute();
+				}
 			}
 		});
 
@@ -69,12 +76,11 @@ public class MainActivity extends Activity {
 			super.onPostExecute(result);
 			try {
 				JSONObject obj = new JSONObject(response);
-				if(obj.getString("id").equals("null")){ //tratamento de erro resposta nula
-					tv.setText("ERR0: Não foi possivel estabelecer uma conexão com o servidor.");
-				}else if(obj.getString("id").equals("vazio")){ //tratamento de erro resposta nula
+				if(obj.getString("id").equals("vazio")){ //tratamento de erro resposta nula
 					tv.setText("ERR0: Este usuario não existe em nosso banco de dados.");
-				}
-				else{
+				}else if(obj.getString("id").equals("null")){ //tratamento de erro resposta nula
+					tv.setText("ERR0: Não foi possivel estabelecer uma conexão com o servidor.");
+				}else{
 					tv.setText(response);
 				}
 				tv1.setText(obj.getString("id"));
