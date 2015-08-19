@@ -33,7 +33,6 @@ public class MainActivity extends Activity {
 	private String response;
 	private String msg;
 
-
 	public void limpaCampos(){
 		tv1.setText("");
 		tv2.setText("");
@@ -119,10 +118,14 @@ public class MainActivity extends Activity {
 				}else{
 					tv.setText(response);
 					msg = "Busca realizada com sucesso!";
-					tv.setText(msg);
+					tv.setText(response);
 					notifica(msg);
 				}
-				tv1.setText(obj.getString("id"));
+				if(response.equals("{\"id\":\"null\"}") || response.equals("{\"id\":\"vazio\"}")){
+					tv1.setText("");
+				}else{
+					tv1.setText(obj.getString("id"));
+				}
 				tv2.setText(obj.getString("peso"));
 				tv3.setText(obj.getString("altura"));
 				tv4.setText(obj.getString("peitoral_maior"));
@@ -173,7 +176,7 @@ public class MainActivity extends Activity {
 				Log.i("TAG", response);
 
 			} else {
-				Log.i("App", "====> NULO <========");
+				Log.i("TAG", "====> NULO <========");
 				response = "{\"id\":\"null\"}";
 			}
 			return null;
