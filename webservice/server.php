@@ -14,8 +14,8 @@
                 'Apenas um exemplo utilizando o NuSOAP PHP.'
 );
         function exemplo($id){
-                $conecta = mysql_connect("localhost", "retamero_root", "Mudar123") or print (mysql_error());
-                mysql_select_db("retamero_academia", $conecta) or print(mysql_error());
+                $conecta = mysql_connect("localhost", "SEU_USER", "SUA_SENHA") or print (mysql_error());
+                mysql_select_db("SEU_BANCO", $conecta) or print(mysql_error());
                 $sql = "SELECT * FROM medidas WHERE aluno_id = " . $id ;
                 $result = mysql_query($sql, $conecta);
                 //while($consulta = mysql_fetch_array($result)) { //pega indice valor e nome do campo e valor
