@@ -136,6 +136,9 @@ public class MainActivity extends Activity {
 				}else {
 					editarAsynTask myRequestEditar = new editarAsynTask();
 					myRequestEditar.execute();
+					msg = "Informações alteradas com sucesso!";
+					tv.setText(msg);
+					notifica(msg);
 				}
 			}
 		});
@@ -149,11 +152,11 @@ public class MainActivity extends Activity {
 			try {
 				JSONObject obj = new JSONObject(response);
 				if(obj.getString("id").equals("vazio")){ //tratamento de erro usuario não encontrado
-					msg = "ERR0: Este usuario não existe em nosso banco de dados.";
+					msg = "Este usuario não existe em nosso banco de dados.";
 					tv.setText(msg);
 					notifica(msg);
 				}else if(obj.getString("id").equals("null")){ //tratamento de erro resposta nula
-					msg = "ERR0: Não foi possivel estabelecer uma conexão com o servidor.";
+					msg = "Não foi possivel estabelecer uma conexão com o servidor.";
 					tv.setText(msg);
 					notifica(msg);
 				}else{
@@ -182,6 +185,21 @@ public class MainActivity extends Activity {
 				tv14.setText(obj.getString("panturrilha_direita"));
 				tv15.setText(obj.getString("quadril_esquerdo"));
 				tv16.setText(obj.getString("quadril_direito"));
+				ed1.setText(obj.getString("peso"));
+				ed2.setText(obj.getString("altura"));
+				ed3.setText(obj.getString("peitoral_maior"));
+				ed4.setText(obj.getString("peitoral_menor"));
+				ed5.setText(obj.getString("quadril"));
+				ed6.setText(obj.getString("biceps_esquerdo"));
+				ed7.setText(obj.getString("biceps_direito"));
+				ed8.setText(obj.getString("triceps_esquerdo"));
+				ed9.setText(obj.getString("triceps_direito"));
+				ed10.setText(obj.getString("coxas_esquerda"));
+				ed11.setText(obj.getString("coxas_direita"));
+				ed12.setText(obj.getString("panturrilha_esquerda"));
+				ed13.setText(obj.getString("panturrilha_direita"));
+				ed14.setText(obj.getString("quadril_esquerdo"));
+				ed15.setText(obj.getString("quadril_direito"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -243,8 +261,8 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			try {
 				JSONObject objSend = new JSONObject();
+			try {
 				objSend.accumulate("peso", ed1.getText().toString());
 				objSend.accumulate("altura", ed2.getText().toString());
 				objSend.accumulate("peitoral_maior", ed3.getText().toString());
@@ -260,37 +278,37 @@ public class MainActivity extends Activity {
 				objSend.accumulate("panturrilha_direita", ed13.getText().toString());
 				objSend.accumulate("quadril_esquerdo", ed14.getText().toString());
 				objSend.accumulate("quadril_direito", ed15.getText().toString());
-				Log.i("DEBUG", "ENVIA " + objSend);
-
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				SoapObject request = new SoapObject(NAMESPACE,METHOD_UPDATE);
 				request.addProperty("id", etTexto.getText().toString());
-				request.addProperty("json", objSend.toString());
+			request.addProperty("json", objSend.toString());
 
-				////MarshalBase64 mbase = new MarshalBase64(); // importante para envio
-
-				SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
-				////envelope.bodyOut = request;
-    			/////envelope.encodingStyle = SoapSerializationEnvelope.ENC2003;
-    			////envelope.dotNet = true;
-    			envelope.setOutputSoapObject(request);
-
+				Log.i("DEBUG", "ENVIA " + objSend.toString());
+			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+					SoapEnvelope.VER11);
+			envelope.dotNet = true;
+			envelope.setOutputSoapObject(request);
 			HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
-				////mbase.register(envelope); // importante para envio
-			androidHttpTransport.call(SOAP_ACTION_UPDATE, envelope);
-
-				/*SoapObject result = (SoapObject) envelope.bodyIn;
-				if (result != null) {
-					response = result.getProperty(0).toString();
-					Log.i("UPDATE", response);
-
-				} else {
-					Log.i("UPDATE", "====> NULO <========");
-					response = "{\"id\":\"null\"}";
-				}*/
+			try {
+				androidHttpTransport.call(SOAP_ACTION, envelope);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
+			SoapObject result;
+			result = (SoapObject) envelope.bodyIn;
+
+			if (result != null) {
+				response = result.getProperty(0).toString();
+				Log.i("UPDATE", response);
+				} else {
+				Log.i("SELECT", "====> NULO <========");
+				response = "{\"id\":\"null\"}";
+			}
 			return null;
 		}
+
 	}
 }
