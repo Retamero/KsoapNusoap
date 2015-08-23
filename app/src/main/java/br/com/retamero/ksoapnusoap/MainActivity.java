@@ -5,6 +5,7 @@ import org.apache.http.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
@@ -29,8 +30,8 @@ public class MainActivity extends Activity {
 	/* Configurações que devem estar no lado WEBSERVICE do PHP/APACHE/WINDOWS ou LINUX
 	 * mudar onde esta retamero.com.br pelo IP ou dominio da maquina que esta rodando o webservice.
 	 */
-	private static final String SOAP_ACTION = "http://retamero.com.br/webservice/server.php/exemplo";
-	private static final String SOAP_ACTION_UPDATE = "http://retamero.com.br/webservice/server.php/update";
+	private static final String SOAP_ACTION = "http://retamero.com.br/webservice/exemplo";
+	private static final String SOAP_ACTION_UPDATE = "http://retamero.com.br/webservice/update";
 	private static final String METHOD_NAME = "exemplo";
 	private static final String METHOD_UPDATE = "update";
 	private static final String NAMESPACE = "http://retamero.com.br/webservice";
@@ -259,22 +260,25 @@ public class MainActivity extends Activity {
 				objSend.accumulate("panturrilha_direita", ed13.getText().toString());
 				objSend.accumulate("quadril_esquerdo", ed14.getText().toString());
 				objSend.accumulate("quadril_direito", ed15.getText().toString());
-				Log.i("DEBUG", "ENVIA " + objSend.toString());
+				Log.i("DEBUG", "ENVIA " + objSend);
 
-				SoapObject request = new SoapObject(NAMESPACE, METHOD_UPDATE);
+				SoapObject request = new SoapObject(NAMESPACE,METHOD_UPDATE);
 				request.addProperty("id", etTexto.getText().toString());
-				request.addProperty("id", objSend.toString());
-				SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-					SoapEnvelope.VER11);
-				envelope.bodyOut = request;
-    			envelope.encodingStyle = SoapSerializationEnvelope.ENC2003;
-    			envelope.dotNet = true;
+				request.addProperty("json", objSend.toString());
+
+				////MarshalBase64 mbase = new MarshalBase64(); // importante para envio
+
+				SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
+				////envelope.bodyOut = request;
+    			/////envelope.encodingStyle = SoapSerializationEnvelope.ENC2003;
+    			////envelope.dotNet = true;
     			envelope.setOutputSoapObject(request);
+
 			HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+				////mbase.register(envelope); // importante para envio
 			androidHttpTransport.call(SOAP_ACTION_UPDATE, envelope);
 
-				SoapObject result;
-				result = (SoapObject) envelope.bodyIn;
+				/*SoapObject result = (SoapObject) envelope.bodyIn;
 				if (result != null) {
 					response = result.getProperty(0).toString();
 					Log.i("UPDATE", response);
@@ -282,7 +286,7 @@ public class MainActivity extends Activity {
 				} else {
 					Log.i("UPDATE", "====> NULO <========");
 					response = "{\"id\":\"null\"}";
-				}
+				}*/
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/KsoapNusoap.iml" filepath="$PROJECT_DIR$/KsoapNusoap.iml" />
       <module fileurl="file://$PROJECT_DIR$/KsoapNusoap_as.iml" filepath="$PROJECT_DIR$/KsoapNusoap_as.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
