@@ -1,14 +1,14 @@
 <?php
         require_once('lib/nusoap.php');
         $server = new nusoap_server();
-        $server->configureWSDL('server.exemplo', 'urn:server');
-        $server->wsdl->schemaTargetNamespace = 'urn:server';
+        $server->configureWSDL('server.exemplo', 'http://retamero.com.br/webservice');
+        $server->wsdl->schemaTargetNamespace = 'http://retamero.com.br/webservice';
 
         $server->register('exemplo', 
-                        array('id'=>'xsd:string'),
-                        array('return'=>'xsd:string'),
-                        'urn:server',
-                 'urn:server#exemplo',
+                 array('id'=>'xsd:string'),
+                 array('retorno'=>'xsd:string'),
+                 'http://retamero.com.br/webservice',
+                 'http://retamero.com.br/webservice/exemplo',
                  'rpc',
                  'encoded',
                 'Apenas um exemplo utilizando o NuSOAP PHP.'
@@ -17,17 +17,16 @@
         $server->register('update', 
 			array('id'=>'xsd:string',
 			'json'=>'xsd:string'),
-                        array('return'=>'xsd:string'),
-                        'urn:server',
-                 'urn:server#update',
+                 array('retorno'=>'xsd:string'),
+                 'http://retamero.com.br/webservice',
+                 'http://retamero.com.br/webservice/update',
                  'rpc',
                  'encoded',
                 'Apenas um exemplo utilizando o NuSOAP PHP.'
 );
 
-
         function exemplo($id){
-                $conecta = mysql_connect("localhost", "retamero_root", "Mudar123") or print (mysql_error());
+                $conecta = mysql_connect("localhost", "user", "senha") or print (mysql_error());
                 mysql_select_db("retamero_academia", $conecta) or print(mysql_error());
                 $sql = "SELECT * FROM medidas WHERE aluno_id = " . $id ;
                 $result = mysql_query($sql, $conecta);
@@ -43,11 +42,11 @@
                 }
                 return $retorno;
         }
-
+        
        function update($id, $json){
 		$decodificado = json_decode($json, true);
       		
-                $conecta = mysql_connect("localhost", "retamero_root", "Mudar123") or print (mysql_error());
+                $conecta = mysql_connect("localhost", "user", "senha") or print (mysql_error());
                 mysql_select_db("retamero_academia", $conecta) or print(mysql_error());
                 $sql = "UPDATE medidas SET
                 peso = '".$decodificado['peso']."',
@@ -70,7 +69,6 @@
                	$retorno = "{\"id\":\"ok\"}";
                	return $retorno;
         }
-        
 // para sobecrever se a variavel estiver em branco.
 $POST_DATA = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
 // devolve para o clinte
